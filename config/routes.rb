@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  root 'opinions#new'
 
   resources :topics, only: [] do
     resources :opinions, only: [:new, :create]

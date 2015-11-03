@@ -1,7 +1,6 @@
 class OpinionsController < ApplicationController
   def new
-    topic = Topic.find(topic_id)
-    @opinion = topic.opinions.new
+    @opinion = current_topic.opinions.new
   end
 
   def create    
@@ -24,11 +23,15 @@ class OpinionsController < ApplicationController
   end
 
   def topic_id
-    params.require(:topic_id)
+    params[:topic_id]
+  end
+
+  def current_topic
+    @current_topic ||= topic_id.present? ? Topic.find(topic_id) : Topic.first
   end
 
   def redirect_to_next_topic
-    next_topic = Topic.next_incompleted_topic(completed_topics)
+    next_topic = Topic.next_incompleted_topic(completed_topics)    
 
     if next_topic
       redirect_to new_topic_opinion_url(topic_id: next_topic.id)
