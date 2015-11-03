@@ -17,6 +17,16 @@ RSpec.describe OpinionsController, type: :controller do
       do_request
       expect(assigns(:opinion)).not_to be nil
     end
+
+    context 'Topic has been completed' do
+      let!(:next_topic) { create(:topic) }
+      before { session[:completed_topics] = [topic.id] }
+
+      it 'redirects to the next topic' do
+        do_request
+        expect(response).to redirect_to new_topic_opinion_url(topic_id: next_topic.id)
+      end
+    end
   end
 
   describe '#create' do

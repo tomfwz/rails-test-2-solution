@@ -1,6 +1,8 @@
 class OpinionsController < ApplicationController
+  before_action :redirect_if_topic_is_completed, only: :new
+  
   def new
-    @opinion = current_topic.opinions.new
+    @opinion = current_topic.opinions.new    
   end
 
   def create    
@@ -28,6 +30,10 @@ class OpinionsController < ApplicationController
 
   def current_topic
     @current_topic ||= topic_id.present? ? Topic.find(topic_id) : Topic.first
+  end
+
+  def redirect_if_topic_is_completed
+    redirect_to_next_topic if completed_topics.include? current_topic.id
   end
 
   def redirect_to_next_topic
