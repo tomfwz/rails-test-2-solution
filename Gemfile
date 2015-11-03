@@ -40,6 +40,8 @@ group :development, :test do
   gem 'shoulda'
   gem 'factory_girl_rails'
   gem 'awesome_print'
+
+  gem 'capybara'
 end
 
 group :development do
@@ -50,3 +52,5 @@ group :development do
   gem 'spring'
 end
 
+gem 'slim-rails'
+gem 'simple_form'
