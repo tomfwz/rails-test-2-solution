@@ -1,6 +1,7 @@
 class OpinionsController < ApplicationController
+  include TopicsTracker
   before_action :redirect_if_topic_is_completed, only: :new
-  
+
   def new
     @opinion = current_topic.opinions.new    
   end
@@ -9,7 +10,7 @@ class OpinionsController < ApplicationController
     @opinion = Opinion.new(opinion_params)
 
     if @opinion.save
-      mark_topic_as_completed
+      mark_topic_as_completed(topic_id)
       redirect_to_next_topic
     else
       render :new
@@ -44,13 +45,5 @@ class OpinionsController < ApplicationController
     else
       redirect_to thank_you_opinions_url
     end
-  end
-
-  def completed_topics
-    session[:completed_topics] ||= []
-  end
-
-  def mark_topic_as_completed
-    completed_topics << topic_id
   end
 end
